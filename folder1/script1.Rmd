@@ -1,0 +1,48 @@
+---
+title: "Recode"
+author: "AL"
+date: "25/05/2020"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+
+library(dplyr)
+
+char_vec <- c("a", "b", "c")
+char_vec
+
+dplyr::recode(char_vec, a = "apple")
+
+dplyr::recode(c(1,5,3), "a", "b", "c", "d", .default = "nothing")
+
+```
+
+```{r}
+
+factor_vec <- factor(c("a", "b", "c"))
+
+factor_vec
+slot(factor_vec,".Data")
+slot(factor_vec,"levels")
+
+b <- recode_factor(factor_vec, `1`="c", `2`="b", `3`="a")
+b
+slot(b,".Data")
+slot(b,"levels")
+
+a <- recode_factor(factor_vec, "b"="c")
+a
+slot(a,".Data")
+slot(a,"levels")
+
+x <- dplyr::recode(factor_vec, a = "Apple", .default = levels(factor_vec))
+slotNames(x)
+slot(x,".Data")
+slot(x,"levels")
+
+
+```
+

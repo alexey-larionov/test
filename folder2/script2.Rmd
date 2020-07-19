@@ -1,0 +1,94 @@
+# Good coding practices  
+
+Bioinformatics pipelines are complex and inclide multiple scripts.  Lack of rules for writing scripts and organising data may lead to inability to reproduce the results or even to the loss of data and results.  
+
+## Organise project files and folders
+
+Start with the following minimal set of rules:  
+
+- Make a base-folder for the project.  Keep all sub-folders and files generated during the project within this base folder  
+- Keep data and scripts separately  
+- Use meaningful names for files and folders.  Use prefixes in files/folders names.  
+
+For instance, use the following folders structure:  
+
+```{r , echo=FALSE, out.width = '100%'}
+
+knitr::include_graphics("figures/f03_1_folders_tree.png")
+
+```
+
+## Keep detailed logs  
+
+In most cases, we will use *plain text* files to log **Bash** scripts, and *rmd-html* files to log analysis performed in **R**.  
+
+Currently, there is a widely aknowledged reproducibility crisis in bioinformatics. If there is no log for an analysis, consider that the analysis has not been done.  
+
+## Back-up, version control and units testing  
+
+- **Backup** is needed to restore results if the working copy is accidentally destroyed (including by ourselves)  
+- **Version control** is needed to roll back to the previous versions of analysis  
+- **Units testing** is needed to verify that results of each new version of analysis are consistent with the previous versions  
+
+This is what we plan to do about it:  
+
+- We may use **home folder at Inuvika Desktop** to backup the scripts and logs. However, the size of this folder may be insufficient to back-up intermediate data.  So, we will not back-up bulk intermediate data during this project.  
+
+- We will use **Git** for version control (may depend on a Git GUI tool is installed by GEL IT support).  
+
+- We will not implement units testing during this project (we are not developing software products, after all).  
+
+## Coding style
+
+<s3>Start script with a summary</s3>  
+
+Start any script with its name, author, date of last update (at least), and a short summary of what the scripts does.  More information may also be included at the top of the script if needed.  
+
+For instance:  
+
+```{bash, eval=F}
+#!/bin/bash
+
+# s01_split_MA.sh
+# Last updated: Alexey Larionov, 18Mar2019
+
+# Use:
+# bsub < s01_split_MA.sh
+
+# Purpose:
+# Split MA, clean split VCF add Var IDs
+
+#BSUB -q short
+#BSUB -P re_gecip_inherited_cancer_predisposition
+#BSUB -o s01_split_MA%J.out
+#BSUB -e s01_split_MA%J.err
+#BSUB -n 4
+#BSUB -R "rusage[mem=1000]"
+#BSUB -W 01.00
+
+# Stop at runtime errors
+set -e
+
+# Start message
+echo "Split MA, clean split VCF add VarIDs"
+date
+echo ""
+...
+```
+
+
+<s3>Comments are important</s3>  
+
+Do not worry if comments take more than 50% of code: its a good style of programming  
+
+<s3>Write in short modules</s3>  
+
+Consider splitting script if it exceeds 500 lines.  You must split script if it exceeds 1000 lines.  
+
+<s3>Include references to the source web sites</s3>  
+
+(even if the sites are not accessible from GEL-RE)
+
+<s3>Use informative names</s3>  
+
+Call variables in a consistent and informative way, e.g. call variables *cases_count* and *variants_count* instead of *Cc* and *vC*.  
